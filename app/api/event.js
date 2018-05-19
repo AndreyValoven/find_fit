@@ -15,9 +15,10 @@ const eventType = {
         name: { type: 'string', minLength: 1 },
         type: { type: 'string', minLength: 1},
         goal: { type: 'string' },
+        // sport_type: { type: 'array' },
         place: { 
             lat: { type: 'number' },
-            tng: { type: 'number' }
+            lng: { type: 'number' }
         }
     }
 }
@@ -36,9 +37,10 @@ event.post('/create', checkToken, (req, res) => {
         name: req.body.name,
         user_id: req.id,
         goal: req.body.goal,
+        sport_type: req.body.sport_type,
         place: {
             lat: req.body.place.lat,
-            tng: req.body.place.tng 
+            lng: req.body.place.lng 
         }
     });
     // save event to mongodb
@@ -50,7 +52,7 @@ event.post('/create', checkToken, (req, res) => {
                 goal: event.goal,
                 place: {
                     lat: event.place.lat,
-                    tng: event.place.tng
+                    lng: event.place.lng
                 }
             })
         })
@@ -69,9 +71,9 @@ event.get('/:id', (req, res) => {
                 goal: event.goal,
                 place: {
                     lat: event.place.lat,
-                    tng: event.place.tng
+                    lng: event.place.lng
                 },
-                followers: followersCount
+                followersCount,
             });
         })
         .catch(error => res.status(500).json({ error }));
@@ -105,8 +107,24 @@ event.patch('/:id/followers', checkToken, (req, res) => {
             user.following_events.push(id);
             return user.save();
         })
-        .then(user => {
-            res.json({ message: 'ok'})
+        .then(() => {
+            return Event.findOne({ _id: id })
+        })
+        .then( event => {
+            let followersCount = event.users_id.length;
+            User.find({ _id: {$in: event.users_id }}).limit(3)
+                .then(users => {
+                    users = users.map(function(user) {
+                        return {
+                            id: user._id,
+                            name: user.name
+                        }
+                    });
+                    res.json({
+                        users,
+                        followersCount
+                    })
+                });
         })
         .catch(error => res.status(500).json({ error }));
 });
