@@ -1,0 +1,9 @@
+version: '2'
+services:
+ db:
+  container_name: hackaton
+  image: 'mongo:3.6'
+  ports:
+   - '27017:27017'
+  volumes: 
+   - '/home/andrey/web/hackaton/mongo/data:/data/db'
