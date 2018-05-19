@@ -4,6 +4,7 @@ const Ajv = require('ajv');
 
 const checkToken = require('./../validateToken');
 const Event = require('./../schemas/event');
+const User = require('./../schemas/user');
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -94,13 +95,62 @@ event.get('/all', (req, res) => {
         .catch(error => res.status(500).json({ error }));
 });
 
-// event.patch('/:id/followers', checkToken, (req, res) => {
-//     if (typeof(req.id) === 'undefined')
-//         return res.status(403).json({ erorr: 'Forbidden'});
-//     let url = req.originalUrl.split('/');
-//     const id = url[3];
-//     console.log(id);
-// })
+// subscribe to event
+event.patch('/:id/followers', checkToken, (req, res) => {
+    if (typeof(req.id) === 'undefined')
+        return res.status(403).json({ erorr: 'Forbidden'});
+    let url = req.originalUrl.split('/');
+    const id = url[3];
+    Event.findOne({ _id: id })
+        .then(event => {
+            if (event === null) return res.status(404).json({ error: 'Not found' });
+            if (event.user_id === req.id) 
+                return  res.status(500).json({ error: 'user who create can not submint this event'});
+            for(let user of event.users_id) {
+                if (user + '' === req.id + '')
+                    return res.status(500).json({error: 'you follow this event'});
+            }
+            event.users_id.push(req.id);
+            return event.save()
+        })
+        .then(event => User.findOne({  _id: req.id }))
+        .then(user => {
+            for (let event of user.following_events) {
+                if (event.id + '' === id) 
+                    return res.status(500).json({ error: 'you follow this event'})
+            }
+            user.following_events.push(id);
+            return user.save();
+        })
+        .then(user => {
+            res.json({ message: 'ok'})
+        })
+        .catch(error => res.status(500).json({ error }));
+});
+
+// get event followers
+event.get('/:id/followers', (req, res) => {
+    let url = req.originalUrl.split('/');
+    const id = url[3];
+    Event.findOne({ _id: id })
+        .then(event => {
+            return User.find({
+                _id: {
+                    $in: event.users_id
+                }
+            })
+        })
+        .then(users => {
+            users = users.map(function (user) {
+                return {
+                    id: user._id,
+                    name: user.name
+                }
+            });
+            res.json([ ...users ]);
+        })
+        .catch(error => res.status(500).json({ error }));
+});
 
 
 module.exports = event;
