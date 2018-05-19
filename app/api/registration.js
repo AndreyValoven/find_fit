@@ -14,7 +14,12 @@ const registrationSchema = {
         name: { type: 'string' , minLength: 1},
         sport_type: { type: 'string' , minLength: 1},
         number: { type: 'number' },
-        link: { type: 'string' }
+        link: { type: 'string' },
+        info: {
+            sex: { type: 'string' },
+            age: { type: 'number' },
+            goal: { type: 'string' }
+        }
     },
     required: [ 'name' ]
 }
@@ -34,6 +39,11 @@ registration.post('/',
             contacts: {
                 number: body.number,
                 link: body.link
+            },
+            info: {
+                sex: body.info.sex,
+                age: body.info.age,
+                goal: body.info.goal
             }
         })
 
