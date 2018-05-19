@@ -7,16 +7,18 @@ let event = new Schema({
     user_id: mongoose.Schema.Types.ObjectId,
     name: String,
     goal: String,
-    place: [
+    place: 
         {
             lat: Number,
             tng: Number
-        }
-    ],
+        },
     type: String,
     users_id: [
         {
             type: mongoose.Schema.Types.ObjectId
         }
-    ]
+    ],
+    // time:
 });
+
+module.exports = mongoose.model('Event', event);
