@@ -12,14 +12,12 @@ const registrationSchema = {
     additionaProperties: false,
     properties: {
         name: { type: 'string' , minLength: 1},
-        sport_type: { type: 'string' , minLength: 1},
+        // sport_type: [{ type: 'string' , minLength: 1}],
         number: { type: 'number' },
         link: { type: 'string' },
-        info: {
-            sex: { type: 'string' },
-            age: { type: 'number' },
-            goal: { type: 'string' }
-        }
+        sex: { type: 'string' },
+        age: { type: 'number' },
+        goal: { type: 'string' }
     },
     required: [ 'name' ]
 }
@@ -35,15 +33,16 @@ registration.post('/',
         let body = req.body;
         let user = new User({
             _id: mongoose.Types.ObjectId(),
-            name: req.body.name,
+            name: body.name,
+            sport_type: body.sport_type,
             contacts: {
                 number: body.number,
                 link: body.link
             },
             info: {
-                sex: body.info.sex,
-                age: body.info.age,
-                goal: body.info.goal
+                sex: body.sex,
+                age: body.age,
+                goal: body.goal
             }
         })
 
