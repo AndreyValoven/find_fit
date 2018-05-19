@@ -77,23 +77,6 @@ event.get('/:id', (req, res) => {
         .catch(error => res.status(500).json({ error }));
 });
 
-event.get('/all', (req, res) => {
-    Event.find({})
-        .then(events => {
-            events = events.map(function (event) {
-                return {
-                    id: event._id,
-                    name: event.name,
-                    place: {
-                        lat: event.place.lat,
-                        tng: event.place.tng
-                    }
-                }
-            });
-            res.json({ events })
-        })
-        .catch(error => res.status(500).json({ error }));
-});
 
 // subscribe to event
 event.patch('/:id/followers', checkToken, (req, res) => {
