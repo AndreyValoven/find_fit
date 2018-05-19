@@ -7,10 +7,11 @@ let event = new Schema({
     user_id: mongoose.Schema.Types.ObjectId,
     name: String,
     goal: String,
+    sport_type: [ {type: String} ],
     place: 
         {
             lat: Number,
-            tng: Number
+            lng: Number
         },
     type: String,
     users_id: [
