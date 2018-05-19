@@ -1,6 +1,6 @@
 const api = require('express').Router();
 
-api.post('/registration', require('./user'));
+api.use('/user', require('./user'));
 
 
 module.exports = api;

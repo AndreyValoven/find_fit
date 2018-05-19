@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 mongoose.connect('mongodb://localhost/find_fit');
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 const PORT = process.env.PORT || 3000;
 const db = mongoose.connection;
 

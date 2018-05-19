@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let user = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    name: String,
+    name: { type: String, unique: true },
     sport_type: String,
     contacts: {
         number: Number,
@@ -20,3 +20,5 @@ let user = new Schema({
         }
     ]
 });
+
+module.exports = mongoose.model('User', user);
