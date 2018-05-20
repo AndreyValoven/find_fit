@@ -12,7 +12,9 @@ let user = new Schema({
     info: {
         sex: String,
         age: Number,
-        goal: String
+        goal: String,
+        height: Number,
+        weight: Number
     },
     following_events: [
         {

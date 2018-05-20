@@ -19,7 +19,7 @@ let event = new Schema({
             type: mongoose.Schema.Types.ObjectId
         }
     ],
-    // time:
+    date: Number
 });
 
 module.exports = mongoose.model('Event', event);
