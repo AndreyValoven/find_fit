@@ -17,7 +17,9 @@ const registrationSchema = {
         link: { type: 'string' },
         sex: { type: 'string' },
         age: { type: 'number' },
-        goal: { type: 'string' }
+        goal: { type: 'string' },
+        height: { type: 'number' },
+        weight: { type: 'number' }
     },
     required: [ 'name' ]
 }
@@ -42,7 +44,9 @@ registration.post('/',
             info: {
                 sex: body.sex,
                 age: body.age,
-                goal: body.goal
+                goal: body.goal,
+                height: body.height,
+                weight: body.weight
             }
         })
 
