@@ -19,7 +19,7 @@ events.get('/all', (req, res) => {
         .catch(error => res.status(500).json({ error }));
 });
 
-// nned to test
+// events filter
 events.get('/filter', (req, res) => {
     const query = Object.assign({}, req.query);
     let startDate = Date.UTC(...query.start_date.split('/'));
