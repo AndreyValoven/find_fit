@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({
 }));
 const PORT = process.env.PORT || 3000;
 const db = mongoose.connection;
+app.use(express.static('public'));
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
