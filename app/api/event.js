@@ -15,11 +15,11 @@ const eventType = {
         name: { type: 'string', minLength: 1 },
         type: { type: 'string', minLength: 1},
         goal: { type: 'string' },
-        // sport_type: { type: 'array' },
         place: { 
             lat: { type: 'number' },
             lng: { type: 'number' }
-        }
+        },
+        date: { type: 'string' }
     }
 }
 
@@ -30,8 +30,8 @@ event.post('/create', checkToken, (req, res) => {
     if (typeof(req.id) === 'undefined')
         return res.status(403).json({ erorr: 'Forbidden'});
     if (!eventValidate(req.body)) 
-        return res.status(500).json({ error: eventValidate})
-    
+        return res.status(500).json({ error: eventValidate.errors})
+    date = Date.UTC(...req.body.date.split('/'));
     let newEvent = new Event({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -41,7 +41,8 @@ event.post('/create', checkToken, (req, res) => {
         place: {
             lat: req.body.place.lat,
             lng: req.body.place.lng 
-        }
+        },
+        date
     });
     // save event to mongodb
     newEvent.save()
@@ -53,11 +54,11 @@ event.post('/create', checkToken, (req, res) => {
                 place: {
                     lat: event.place.lat,
                     lng: event.place.lng
-                }
+                },
+                date: event.date
             })
         })
         .catch(error => res.status(500).json({ error }));
-
 });
 
 // get event
