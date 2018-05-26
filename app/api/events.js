@@ -22,8 +22,16 @@ events.get('/all', (req, res) => {
 // events filter
 events.get('/filter', (req, res) => {
     const query = Object.assign({}, req.query);
-    let startDate = Date.UTC(...query.start_date.split('/'));
-    let endDate = Date.UTC(...query.end_date.split('/'));
+    let start = query.start_date.replace(/-/g, '/');
+    start = start.replace(/:/g, '/');
+    start = start.replace(/T/, '/');
+    start = start.split('/');
+    let startDate = Date.UTC(...start);
+    let end = query.end_date.replace(/-/g, '/');
+    end = end.replace(/:/g, '/');
+    end = end.replace(/T/, '/');
+    end = end.split('/');
+    let endDate = Date.UTC(...end);
     Event.find({
         sport_type:  { $in: query.sport_type }
     })

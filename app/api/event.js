@@ -26,16 +26,16 @@ const eventType = {
 const eventValidate = ajv.compile(eventType);
 
 // create event
-event.post('/create', checkToken, (req, res) => {
-    if (typeof(req.id) === 'undefined')
-        return res.status(403).json({ erorr: 'Forbidden'});
+event.post('/create',/* checkToken,*/ (req, res) => {
+    // if (typeof(req.id) === 'undefined')
+    //     return res.status(403).json({ erorr: 'Forbidden'});
     if (!eventValidate(req.body)) 
         return res.status(500).json({ error: eventValidate.errors})
-    date = Date.UTC(...req.body.date.split('/'));
+    date = Date.UTC(...req.body.date.replace(/-/g, '/').replace(/:/g, '/').replace(/T/, '/').split('/'));
     let newEvent = new Event({
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
-        user_id: req.id,
+        user_id: "5b0069ada5aa6c4d44f70a02",
         goal: req.body.goal,
         sport_type: req.body.sport_type,
         place: {

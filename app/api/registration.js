@@ -28,7 +28,7 @@ const registrationValidate = ajv.compile(registrationSchema);
 
 registration.post('/', 
     (req, res, next) => {
-        if (!registrationValidate(req.body)) return res.status(500).json({ error: registrationValidate.errors });
+        if (!registrationValidate(req.body)) return res.status(400).json({ error: registrationValidate.errors });
         next();
     },
     (req, res) => {
