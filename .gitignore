@@ -1,0 +1,13 @@
+" Press ? for help
+
+.. (up a dir)
+/home/andy/Projects/find_fit/
++ [  ]app/
++ [  ]models/
++ [  ]node_modules/
++ [  ]tests/
+  [  ]docker-compose.yml
+  [  ]package-lock.json
+  [  ]package.json
+  [  ]README.md
+  [  ]server.js
